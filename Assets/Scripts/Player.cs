@@ -19,27 +19,26 @@ public class Player : MonoBehaviour
     [SerializeField] private float jumpHeight = 2f;
     [SerializeField] private float gravity = -9.81f;
     [SerializeField] private GameInput gameInput;
+    private bool isWalking = false;
 
     // Для isGrounded, настроить потом под готовую модельку
     [SerializeField] private CapsuleCollider capsuleCollider;
     private float playerRadius;
     private float playerHeight;
+    private float groundCheckDistance = 0.1f;
+    private float verticalVelocity = 0f;
+    private bool isGrounded = true;
 
     // Модельки для необходимые для работы SpiritFlip
     [SerializeField] private GameObject pirateModel;
     [SerializeField] private GameObject spiritModel;
     [SerializeField] private GameObject fakePirateModel;
+    private Vector3 coordinatesBeforeFlip;
+    public bool isSpirit { get; private set; }
 
     // Слои для игнорирования призраком 
     [SerializeField] private LayerMask playerLayerMask;
     [SerializeField] private LayerMask spiritIgnoreLayerMask;
-
-    private float groundCheckDistance = 0.1f;
-    private float verticalVelocity = 0f;
-    private bool isWalking = false;
-    private bool isGrounded = true;
-
-    private Vector3 coordinatesBeforeFlip;
 
     private void Awake()
     {
@@ -188,6 +187,7 @@ public class Player : MonoBehaviour
     {
         if (!spiritModel.activeSelf)
         {
+            isSpirit = true;
             coordinatesBeforeFlip = transform.position;
         }
 
@@ -197,13 +197,18 @@ public class Player : MonoBehaviour
         if (spiritModel.activeSelf)
         {
             StartCoroutine(SmoothReturnToPosition(coordinatesBeforeFlip, 0.4f));
+            isSpirit = false;
         }
         else
         {
             fakePirateModel.SetActive(!fakePirateModel.activeSelf);
             pirateModel.SetActive(!pirateModel.gameObject.activeSelf);
             spiritModel.SetActive(!spiritModel.gameObject.activeSelf);
+            isSpirit = true;
         }
+
+        String state = isSpirit ? "Spirit" : "Fox";
+        Debug.Log($"You are {state}");
     }
 
     private IEnumerator SmoothReturnToPosition(Vector3 targetPosition, float duration)
