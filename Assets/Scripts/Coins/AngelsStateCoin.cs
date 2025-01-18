@@ -20,7 +20,8 @@ public class AngelsStateCoin : MonoBehaviour, ICoin
         else
             ICoin.GetRandomChoice();
 
-            lastUsedTime = Time.time;
+        Debug.Log("AngelsStateCoin used.");
+        lastUsedTime = Time.time;
     }
 
     public bool IsCooldown()

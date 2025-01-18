@@ -20,6 +20,7 @@ public class SwordsManCoin : MonoBehaviour, ICoin
         else
             ICoin.GetRandomChoice();
 
+        Debug.Log("SwordsManCoin used.");
         lastUsedTime = Time.time;
     }
 

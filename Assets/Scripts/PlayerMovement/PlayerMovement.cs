@@ -67,6 +67,10 @@ public class PlayerMovement : MonoBehaviour
         gameInput.OnJumpAction += GameInput_OnJumpAction;
         gameInput.OnFlipAction += GameInput_OnFlipAction;
         gameInput.OnInteractAction += GameInput_OnInteractAction;
+        gameInput.OnFlipAngelsState += CoinManager.Instance.GetCoin(CoinType.AngelsState).CoinAbility.Action;
+        gameInput.OnFlipGunslingerCurse += CoinManager.Instance.GetCoin(CoinType.GunslingerCurse).CoinAbility.Action;
+        gameInput.OnFlipLoversBlessing += CoinManager.Instance.GetCoin(CoinType.LoversBlessing).CoinAbility.Action;
+        gameInput.OnFlipSwordsMan += CoinManager.Instance.GetCoin(CoinType.SwordsMan).CoinAbility.Action;
     }
 
     private void Update()

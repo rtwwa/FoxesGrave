@@ -20,6 +20,7 @@ public class GunslingerCurseCoin : MonoBehaviour, ICoin
         else
             ICoin.GetRandomChoice();
 
+        Debug.Log("GunslingerCurseCoin used.");
         lastUsedTime = Time.time;
     }
 

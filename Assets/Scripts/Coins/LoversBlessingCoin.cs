@@ -21,6 +21,7 @@ public class LoversBlessingCoin : MonoBehaviour, ICoin
         else
             Invincibility();
 
+        Debug.Log("LoversBlessingCoin used.");
         lastUsedTime = Time.time;
     }
 
