@@ -9,10 +9,13 @@ public class PlayerStats : MonoBehaviour
     [Header("Player Stats")]
     [SerializeField] private int maxHealth = 100;
     private int currentHealth;
+    private bool canTakeDamage;
 
     [Header("Abilities")]
     private Dictionary<CoinType, bool> abilities = new Dictionary<CoinType, bool>();
 
+    [Header("Shield Effect")]
+    [SerializeField] private GameObject shieldEffect;
 
     private void Awake()
     {
@@ -29,16 +32,39 @@ public class PlayerStats : MonoBehaviour
         currentHealth = maxHealth;
     }
 
+    public void ActivateShield()
+    {
+        if (canTakeDamage)
+        {
+            canTakeDamage = false;
+            shieldEffect.SetActive(true);
+
+            StartCoroutine(ShieldTimer());
+        }
+    }
+
+    private IEnumerator ShieldTimer()
+    {
+        yield return new WaitForSeconds(3f);
+
+        shieldEffect.SetActive(false);
+
+        canTakeDamage = true;
+    }
+
     #region Health Management
     // Метод для нанесения урона
-    public void TakeDamage(int damage)
+    public void TakeDamage(int amount)
     {
-        currentHealth -= damage;
-        Debug.Log($"Player took {damage} damage. Current Health: {currentHealth}");
-
-        if (currentHealth <= 0)
+        if (canTakeDamage)
         {
-            Die();
+            currentHealth -= amount;
+            currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
+            Debug.Log("Player took damage. Current health: " + currentHealth);
+        }
+        else
+        {
+            Debug.Log("Player is shielded and can't take damage.");
         }
     }
 

@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 public enum CoinType
@@ -13,4 +14,10 @@ public interface ICoin
 {
     void UseAbility();
     void ShowAnimation(GameObject target);
+    bool IsCooldown();
+
+    static bool GetRandomChoice()
+    {
+        return UnityEngine.Random.Range(0f, 1f) < 0.5f;
+    }
 }
