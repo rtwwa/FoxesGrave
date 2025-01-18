@@ -28,6 +28,7 @@ public class ButtonSequenceManager : MonoBehaviour
 
             if (currentStep >= rightSequence.Length)
             {
+                currentStep = 0;
                 onSequenceComplete();
             }
         }

@@ -248,7 +248,7 @@ public class Player : MonoBehaviour
     private void HandleMovement()
     {
         Vector2 inputVector = gameInput.GetMovementVectorNormalized();
-        Vector3 moveDirection = Quaternion.Euler(0, -45, 0) * new Vector3(inputVector.x, 0f, inputVector.y);
+        Vector3 moveDirection = new Vector3(inputVector.x, 0f, inputVector.y);
 
         float moveDistance = moveSpeed * Time.deltaTime;
 
