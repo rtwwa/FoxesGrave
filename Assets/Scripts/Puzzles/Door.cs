@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Door : MonoBehaviour, IInteractable
+public class Door : MonoBehaviour, IInteractable, IOnComplete
 {
     [SerializeField] private GameObject model;
     [SerializeField] private GameObject outlineModel;
@@ -66,5 +66,10 @@ public class Door : MonoBehaviour, IInteractable
     public void HideOutline()
     {
         outlineModel.SetActive(false);
+    }
+
+    public void OnComplete()
+    {
+        StartCoroutine(InteractWithDoor());
     }
 }

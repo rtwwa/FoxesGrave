@@ -6,7 +6,7 @@ public class ButtonSequenceManager : MonoBehaviour
     [SerializeField] private Button[] buttons;
     [SerializeField] private int[] rightSequence;
 
-    public Action onCompleteSequence { get; set; }
+    [SerializeField] private IOnComplete onComplete;
 
     private int currentStep = 0;
 
@@ -41,6 +41,6 @@ public class ButtonSequenceManager : MonoBehaviour
     private void onSequenceComplete()
     {
         Debug.Log("Puzzle solved...");
-        onCompleteSequence?.Invoke();
+        onComplete?.OnComplete();
     }
 }
