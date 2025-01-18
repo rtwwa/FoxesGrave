@@ -14,10 +14,6 @@ public enum CoinType
 public interface ICoin
 {
     void UseAbility();
-    void Action(object sender, EventArgs e)
-    {
-        UseAbility();
-    }
     void ShowAnimation(GameObject target);
     bool IsCooldown();
 

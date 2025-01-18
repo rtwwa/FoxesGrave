@@ -67,10 +67,26 @@ public class PlayerMovement : MonoBehaviour
         gameInput.OnJumpAction += GameInput_OnJumpAction;
         gameInput.OnFlipAction += GameInput_OnFlipAction;
         gameInput.OnInteractAction += GameInput_OnInteractAction;
-        gameInput.OnFlipAngelsState += CoinManager.Instance.GetCoin(CoinType.AngelsState).CoinAbility.Action;
-        gameInput.OnFlipGunslingerCurse += CoinManager.Instance.GetCoin(CoinType.GunslingerCurse).CoinAbility.Action;
-        gameInput.OnFlipLoversBlessing += CoinManager.Instance.GetCoin(CoinType.LoversBlessing).CoinAbility.Action;
-        gameInput.OnFlipSwordsMan += CoinManager.Instance.GetCoin(CoinType.SwordsMan).CoinAbility.Action;
+        gameInput.OnFlipAngelsState += GameInput_OnFlipAngelsState;
+        gameInput.OnFlipGunslingerCurse += GameInput_OnFlipGunslingerCurse;
+        gameInput.OnFlipLoversBlessing += GameInput_OnFlipLoversBlessing;
+        gameInput.OnFlipSwordsMan += GameInput_OnFlipSwordsMan;
+    }
+    private void GameInput_OnFlipAngelsState(object sender, System.EventArgs e)
+    {
+        CoinManager.Instance.UseAbility(CoinType.AngelsState);
+    }
+    private void GameInput_OnFlipGunslingerCurse(object sender, System.EventArgs e)
+    {
+        CoinManager.Instance.UseAbility(CoinType.GunslingerCurse);
+    }
+    private void GameInput_OnFlipLoversBlessing(object sender, System.EventArgs e)
+    {
+        CoinManager.Instance.UseAbility(CoinType.LoversBlessing);
+    }
+    private void GameInput_OnFlipSwordsMan(object sender, System.EventArgs e)
+    {
+        CoinManager.Instance.UseAbility(CoinType.SwordsMan);
     }
 
     private void Update()
@@ -198,7 +214,7 @@ public class PlayerMovement : MonoBehaviour
         if (!CoinManager.Instance.GetCoin(CoinType.SpiritFlip).IsUnlocked)
             return;
 
-        if (!isGrounded)
+        if (!isGrounded && playerState == PlayerState.Hero)
             return;
 
         if (!spiritModel.activeSelf)
