@@ -1,6 +1,6 @@
 using System;
 using UnityEngine;
-// хз, недописал еще
+
 public class ButtonSequenceManager : MonoBehaviour
 {
     [SerializeField] private Button[] buttons;

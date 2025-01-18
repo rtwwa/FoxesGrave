@@ -15,7 +15,7 @@ public class Button : MonoBehaviour, IInteractable
 
     public void Update()
     {
-        if (Player.Instance.playerState != PlayerState.Spirit && this.canActivate == PlayerState.Spirit)
+        if (PlayerMovement.Instance.playerState != PlayerState.Spirit && this.canActivate == PlayerState.Spirit)
         {
             model.SetActive(false);
             outlineModel.SetActive(false);
@@ -28,7 +28,7 @@ public class Button : MonoBehaviour, IInteractable
 
     public void Interact()
     {
-        if (!isMoving && (this.canActivate == PlayerState.Both || this.canActivate == Player.Instance.playerState))
+        if (!isMoving && (this.canActivate == PlayerState.Both || this.canActivate == PlayerMovement.Instance.playerState))
         {
             StartCoroutine(PressButton());
             InteractAction?.Invoke();
@@ -71,7 +71,7 @@ public class Button : MonoBehaviour, IInteractable
 
     public void ShowOutline()
     {
-        if (!isMoving && (this.canActivate == PlayerState.Both || this.canActivate == Player.Instance.playerState))
+        if (!isMoving && (this.canActivate == PlayerState.Both || this.canActivate == PlayerMovement.Instance.playerState))
         {
             outlineModel.SetActive(true);
         }

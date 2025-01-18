@@ -232,8 +232,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 534579115}
-  - component: {fileID: 534579114}
   - component: {fileID: 534579113}
+  - component: {fileID: 534579117}
+  - component: {fileID: 534579116}
+  - component: {fileID: 534579118}
   m_Layer: 6
   m_Name: Player
   m_TagString: Untagged
@@ -264,33 +266,6 @@ CapsuleCollider:
   m_Height: 1.4
   m_Direction: 1
   m_Center: {x: 0, y: 0.7, z: 0}
---- !u!114 &534579114
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 534579112}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8a00aa4058da05e44bc0446c6d03cb5a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  moveSpeed: 7
-  rotateSpeed: 10
-  jumpHeight: 2
-  gravity: -9.81
-  gameInput: {fileID: 807541109}
-  capsuleCollider: {fileID: 534579113}
-  pirateModel: {fileID: 1611677918}
-  spiritModel: {fileID: 1611677915}
-  fakePirateModel: {fileID: 952431492}
-  playerLayerMask:
-    serializedVersion: 2
-    m_Bits: 64
-  spiritIgnoreLayerMask:
-    serializedVersion: 2
-    m_Bits: 128
 --- !u!4 &534579115
 Transform:
   m_ObjectHideFlags: 0
@@ -307,6 +282,69 @@ Transform:
   - {fileID: 1611677917}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &534579116
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 534579112}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 29fa678e36b29fe40bd792bc3f441b63, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 100
+--- !u!114 &534579117
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 534579112}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1abd55e83f4ca70419c836dadf773e02, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moveSpeed: 7
+  rotateSpeed: 15
+  jumpHeight: 1.5
+  gravity: -9.81
+  gameInput: {fileID: 807541109}
+  capsuleCollider: {fileID: 534579113}
+  pirateModel: {fileID: 1611677918}
+  spiritModel: {fileID: 1611677915}
+  fakePirateModel: {fileID: 952431492}
+  playerLayerMask:
+    serializedVersion: 2
+    m_Bits: 64
+  spiritIgnoreLayerMask:
+    serializedVersion: 2
+    m_Bits: 128
+--- !u!114 &534579118
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 534579112}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fed64938cd53b9d438a05a4bf66818c9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  coinModels:
+  - coinType: 0
+    model: {fileID: 919132149155446097, guid: 511c9b6207f70854b89992fb04a02a7a, type: 3}
+  - coinType: 1
+    model: {fileID: 919132149155446097, guid: 511c9b6207f70854b89992fb04a02a7a, type: 3}
+  - coinType: 2
+    model: {fileID: 919132149155446097, guid: 511c9b6207f70854b89992fb04a02a7a, type: 3}
+  - coinType: 3
+    model: {fileID: 919132149155446097, guid: 511c9b6207f70854b89992fb04a02a7a, type: 3}
+  - coinType: 4
+    model: {fileID: 919132149155446097, guid: 511c9b6207f70854b89992fb04a02a7a, type: 3}
 --- !u!1 &594419392
 GameObject:
   m_ObjectHideFlags: 0

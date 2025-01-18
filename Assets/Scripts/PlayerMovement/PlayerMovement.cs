@@ -10,10 +10,10 @@ public enum PlayerState
 }
 
 
-public class Player : MonoBehaviour
+public class PlayerMovement : MonoBehaviour
 {
     // Синглтон
-    public static Player Instance { get; private set; }
+    public static PlayerMovement Instance { get; private set; }
 
     // Все для обработки ивентов от Interactable объектов
     private Vector3 lastInteractDirection;
@@ -53,7 +53,7 @@ public class Player : MonoBehaviour
     {
         if (Instance != null)
         {
-            Debug.LogError("There is more than one Player instance");
+            Debug.LogError("There is more than one PlayerMovement instance");
         }
 
         Instance = this;
@@ -191,6 +191,12 @@ public class Player : MonoBehaviour
 
     private void GameInput_OnFlipAction(object sender, EventArgs e)
     {
+        if (!CoinManager.Instance.GetCoin(CoinType.SpiritFlip).IsUnlocked)
+            return;
+
+        if (!isGrounded)
+            return;
+
         if (!spiritModel.activeSelf)
         {
             isSpirit = true;
