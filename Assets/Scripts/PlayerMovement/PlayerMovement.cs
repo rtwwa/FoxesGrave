@@ -31,6 +31,7 @@ public class PlayerMovement : MonoBehaviour
 
     // Для isGrounded, настроить потом под готовую модельку
     [SerializeField] private CapsuleCollider capsuleCollider;
+    public CapsuleCollider GetCapsuleCollider() { return capsuleCollider; } // Этого тут нет
     private float playerRadius;
     private float playerHeight;
     private float groundCheckDistance = 0.1f;
@@ -164,15 +165,15 @@ public class PlayerMovement : MonoBehaviour
 
     // Визуализация территории для Interactable в Scene
     // Хз, мб будет багать, но raycast вообще нахуй мажет, их надо сто штук
-    private void OnDrawGizmos()
-    {
-        // Визуализация области взаимодействия
-        Gizmos.color = Color.red;
+    //private void OnDrawGizmos()
+    //{
+    //    // Визуализация области взаимодействия
+    //    Gizmos.color = Color.red;
 
-        Vector3 boxCenter = transform.position + transform.forward * interactionBoxOffset.z + transform.up * interactionBoxOffset.y;
-        Gizmos.matrix = Matrix4x4.TRS(boxCenter, transform.rotation, Vector3.one);
-        Gizmos.DrawWireCube(Vector3.zero, interactionBoxSize);
-    }
+    //    Vector3 boxCenter = transform.position + transform.forward * interactionBoxOffset.z + transform.up * interactionBoxOffset.y;
+    //    Gizmos.matrix = Matrix4x4.TRS(boxCenter, transform.rotation, Vector3.one);
+    //    Gizmos.DrawWireCube(Vector3.zero, interactionBoxSize);
+    //}
     private bool IsGrounded()
     {
         RaycastHit hit;

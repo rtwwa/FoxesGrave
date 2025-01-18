@@ -34,11 +34,8 @@ public class CoinManager : MonoBehaviour
             }
 
             ICoin coinComponent = (ICoin)coinObject.AddComponent(GetCoinComponentForType(coinType));
-            coins.Add(coinType, new CoinInfo(coinType, coinComponent, false));
+            coins.Add(coinType, new CoinInfo(coinType, coinComponent, true)); // TODO поменять на false
         }
-
-        UnlockAbility(CoinType.SpiritFlip);
-        UnlockAbility(CoinType.LoversBlessing);
     }
 
     private System.Type GetCoinComponentForType(CoinType coinType)
