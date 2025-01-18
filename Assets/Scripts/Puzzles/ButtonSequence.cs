@@ -24,17 +24,16 @@ public class ButtonSequenceManager : MonoBehaviour
         if (buttonIndex == rightSequence[currentStep])
         {
             currentStep++;
-            Debug.Log($"Ghost sequence progress: {currentStep}/{rightSequence.Length}");
+            Debug.Log($"Sequence progress: {currentStep}/{rightSequence.Length}");
 
             if (currentStep >= rightSequence.Length)
             {
-                Debug.Log("Ghost sequence completed!");
                 onSequenceComplete();
             }
         }
         else
         {
-            Debug.Log("Wrong button in ghost mode! Resetting sequence.");
+            Debug.Log("Wrong button! Resetting sequence.");
             currentStep = 0;
         }
     }

@@ -40,7 +40,7 @@ public class Button : MonoBehaviour, IInteractable
         isMoving = true;
 
         Vector3 originalPosition = transform.position;
-        Vector3 targetPosition = originalPosition + Vector3.down * 0.1f;
+        Vector3 targetPosition = originalPosition + transform.TransformDirection(Vector3.down * 0.1f);
 
         float elapsedTime = 0f;
 
