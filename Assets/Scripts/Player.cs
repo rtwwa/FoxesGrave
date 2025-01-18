@@ -10,8 +10,8 @@ public class Player : MonoBehaviour
     // Все для обработки ивентов от Interactable объектов
     private Vector3 lastInteractDirection;
     private IInteractable lastInteractableObject;
-    private Vector3 interactionBoxSize = new Vector3(1f, 1f, 2f); // Размер области взаимодействия
-    private Vector3 interactionBoxOffset = new Vector3(0f, 0.25f, 1.25f); // Смещение области относительно игрока
+    private Vector3 interactionBoxSize = new Vector3(1f, 1.75f, 2f); // Размер области взаимодействия
+    private Vector3 interactionBoxOffset = new Vector3(0f, 0.75f, 1.25f); // Смещение области относительно игрока
 
     // Параметры для перемещения игрока
     [SerializeField] private float moveSpeed = 10f;
@@ -135,15 +135,15 @@ public class Player : MonoBehaviour
 
     // Визуализация территории для Interactable в Scene
     // Хз, мб будет багать, но raycast вообще нахуй мажет, их надо сто штук
-    //private void OnDrawGizmos()
-    //{
-    //    // Визуализация области взаимодействия
-    //    Gizmos.color = Color.red;
+    private void OnDrawGizmos()
+    {
+        // Визуализация области взаимодействия
+        Gizmos.color = Color.red;
 
-    //    Vector3 boxCenter = transform.position + transform.forward * interactionBoxOffset.z + transform.up * interactionBoxOffset.y;
-    //    Gizmos.matrix = Matrix4x4.TRS(boxCenter, transform.rotation, Vector3.one);
-    //    Gizmos.DrawWireCube(Vector3.zero, interactionBoxSize);
-    //}
+        Vector3 boxCenter = transform.position + transform.forward * interactionBoxOffset.z + transform.up * interactionBoxOffset.y;
+        Gizmos.matrix = Matrix4x4.TRS(boxCenter, transform.rotation, Vector3.one);
+        Gizmos.DrawWireCube(Vector3.zero, interactionBoxSize);
+    }
     private bool IsGrounded()
     {
         RaycastHit hit;

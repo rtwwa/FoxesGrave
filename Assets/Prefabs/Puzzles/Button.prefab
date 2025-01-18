@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 6766041290730040059}
   - component: {fileID: 3075036302325536976}
   - component: {fileID: 8424184294132108207}
-  - component: {fileID: 4107653545444098826}
   m_Layer: 0
   m_Name: Button
   m_TagString: Untagged
@@ -84,27 +83,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &4107653545444098826
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1486575524850237138}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &4911422428038381235
 GameObject:
   m_ObjectHideFlags: 0
@@ -115,6 +93,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1138615293814269396}
   - component: {fileID: 6447475800230308782}
+  - component: {fileID: 1331526587588698544}
   m_Layer: 0
   m_Name: Button
   m_TagString: Untagged
@@ -151,10 +130,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 296aca5fc5de8fc46a29be207dfe21d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  model: {fileID: 0}
-  outlineModel: {fileID: 0}
+  model: {fileID: 1486575524850237138}
+  outlineModel: {fileID: 7995713366458259737}
   moveDuration: 1
-  rotateAngle: -90
+--- !u!65 &1331526587588698544
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4911422428038381235}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.4, y: 0.2, z: 0.4}
+  m_Center: {x: 0, y: 0.1, z: 0}
 --- !u!1 &7995713366458259737
 GameObject:
   m_ObjectHideFlags: 0
@@ -166,14 +165,13 @@ GameObject:
   - component: {fileID: 2845745089278714338}
   - component: {fileID: 1313339259855316694}
   - component: {fileID: 7068699592924460868}
-  - component: {fileID: 6451888021930987145}
   m_Layer: 0
   m_Name: SelectedButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &2845745089278714338
 Transform:
   m_ObjectHideFlags: 0
@@ -239,24 +237,3 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &6451888021930987145
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7995713366458259737}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
