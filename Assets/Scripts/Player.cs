@@ -2,6 +2,14 @@ using System;
 using System.Collections;
 using UnityEngine;
 
+public enum PlayerState
+{
+    Hero,
+    Spirit,
+    Both
+}
+
+
 public class Player : MonoBehaviour
 {
     // Синглтон
@@ -10,13 +18,13 @@ public class Player : MonoBehaviour
     // Все для обработки ивентов от Interactable объектов
     private Vector3 lastInteractDirection;
     private IInteractable lastInteractableObject;
-    private Vector3 interactionBoxSize = new Vector3(1f, 1.75f, 2f); // Размер области взаимодействия
+    private Vector3 interactionBoxSize = new Vector3(1.5f, 1.75f, 2f); // Размер области взаимодействия
     private Vector3 interactionBoxOffset = new Vector3(0f, 0.75f, 1.25f); // Смещение области относительно игрока
 
     // Параметры для перемещения игрока
-    [SerializeField] private float moveSpeed = 10f;
-    [SerializeField] private float rotateSpeed = 10f;
-    [SerializeField] private float jumpHeight = 2f;
+    [SerializeField] private float moveSpeed = 7f;
+    [SerializeField] private float rotateSpeed = 15f;
+    [SerializeField] private float jumpHeight = 1.5f;
     [SerializeField] private float gravity = -9.81f;
     [SerializeField] private GameInput gameInput;
     private bool isWalking = false;
@@ -35,6 +43,7 @@ public class Player : MonoBehaviour
     [SerializeField] private GameObject fakePirateModel;
     private Vector3 coordinatesBeforeFlip;
     public bool isSpirit { get; private set; }
+    public PlayerState playerState { get; private set; }
 
     // Слои для игнорирования призраком 
     [SerializeField] private LayerMask playerLayerMask;
@@ -162,12 +171,9 @@ public class Player : MonoBehaviour
             groundCheckDistance,
             ~playerLayerMask))
         {
-            if (hit.distance <= 0.03f)
-            {
-                transform.position += Vector3.up * 0.03f;
-            }
+            if (hit.distance <= 0.05f)
+                transform.position += Vector3.up * 0.05f; // для работы лифтов
 
-            Debug.Log($"Grounded on: {hit.collider.name}, Distance: {hit.distance}");
             return true;
         }
 
@@ -188,6 +194,7 @@ public class Player : MonoBehaviour
         if (!spiritModel.activeSelf)
         {
             isSpirit = true;
+            playerState = PlayerState.Spirit;
             coordinatesBeforeFlip = transform.position;
         }
 
@@ -198,6 +205,7 @@ public class Player : MonoBehaviour
         {
             StartCoroutine(SmoothReturnToPosition(coordinatesBeforeFlip, 0.4f));
             isSpirit = false;
+            playerState = PlayerState.Hero;
         }
         else
         {
@@ -205,10 +213,10 @@ public class Player : MonoBehaviour
             pirateModel.SetActive(!pirateModel.gameObject.activeSelf);
             spiritModel.SetActive(!spiritModel.gameObject.activeSelf);
             isSpirit = true;
+            playerState = PlayerState.Spirit;
         }
 
-        String state = isSpirit ? "Spirit" : "Fox";
-        Debug.Log($"You are {state}");
+        Debug.Log($"You are {playerState}");
     }
 
     private IEnumerator SmoothReturnToPosition(Vector3 targetPosition, float duration)

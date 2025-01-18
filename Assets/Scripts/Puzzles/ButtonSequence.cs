@@ -3,94 +3,45 @@ using UnityEngine;
 // хз, недописал еще
 public class ButtonSequenceManager : MonoBehaviour
 {
-    [SerializeField] private Button[] normalHeroButtons;
-    [SerializeField] private Button[] ghostHeroButtons;
-    [SerializeField] private int[] normalSequence;
-    [SerializeField] private int[] ghostSequence;
+    [SerializeField] private Button[] buttons;
+    [SerializeField] private int[] rightSequence;
 
-    private bool isCompleteHeroButtons = false;
-    private bool isCompleteGhostButtons = false;
+    public Action onCompleteSequence { get; set; }
 
-    public Action onCompleteHeroButtons { get; set; }
-    public Action onCompleteGhostButtons { get; set; }
-
-    private int currentStep = 0;       // “екущий шаг в последовательности
+    private int currentStep = 0;
 
     private void Start()
     {
-        // Ќазначаем действи€ дл€ кнопок обычного геро€
-        for (int i = 0; i < normalHeroButtons.Length; i++)
+        for (int i = 0; i < buttons.Length; i++)
         {
             int index = i;
-            normalHeroButtons[i].gameObject.GetComponent<Button>().InteractAction = () => OnButtonClicked(index);
-        }
-
-        // Ќазначаем действи€ дл€ кнопок призрака
-        for (int i = 0; i < ghostHeroButtons.Length; i++)
-        {
-            int index = i;
-            ghostHeroButtons[i].gameObject.GetComponent<Button>().InteractAction = () => OnButtonClicked(index);
+            buttons[i].gameObject.GetComponent<Button>().InteractAction = () => OnButtonClicked(index);
         }
     }
 
     private void OnButtonClicked(int buttonIndex)
     {
-        if (Player.Instance.isSpirit && isCompleteHeroButtons)
+        if (buttonIndex == rightSequence[currentStep])
         {
-            // ѕровер€ем последовательность дл€ призрака
-            if (buttonIndex == ghostSequence[currentStep])
-            {
-                currentStep++;
-                Debug.Log($"Ghost sequence progress: {currentStep}/{ghostSequence.Length}");
+            currentStep++;
+            Debug.Log($"Ghost sequence progress: {currentStep}/{rightSequence.Length}");
 
-                if (currentStep >= ghostSequence.Length)
-                {
-                    Debug.Log("Ghost sequence completed!");
-                    OnGhostSequenceComplete();
-                }
-            }
-            else
+            if (currentStep >= rightSequence.Length)
             {
-                Debug.Log("Wrong button in ghost mode! Resetting sequence.");
-                currentStep = 0;
+                Debug.Log("Ghost sequence completed!");
+                onSequenceComplete();
             }
         }
         else
         {
-            // ѕровер€ем последовательность дл€ обычного геро€
-            if (buttonIndex == normalSequence[currentStep])
-            {
-                currentStep++;
-                Debug.Log($"Normal sequence progress: {currentStep}/{normalSequence.Length}");
-
-                if (currentStep >= normalSequence.Length)
-                {
-                    Debug.Log("Normal sequence completed!");
-                    OnNormalSequenceComplete();
-                }
-            }
-            else
-            {
-                Debug.Log("Wrong button in normal mode! Resetting sequence.");
-                currentStep = 0;
-            }
+            Debug.Log("Wrong button in ghost mode! Resetting sequence.");
+            currentStep = 0;
         }
     }
 
-    private void OnNormalSequenceComplete()
+    private void onSequenceComplete()
     {
-        // ƒействи€ после завершени€ этапа обычного геро€
-        Debug.Log("Switching to ghost mode...");
-        currentStep = 0;
-    }
-
-    private void OnGhostSequenceComplete()
-    {
-        // ƒействи€ после завершени€ этапа призрака
-        Debug.Log("Puzzle solved as ghost!");
-        foreach (var button in ghostHeroButtons)
-        {
-            button.HideOutline(); // ¬ы можете добавить другие действи€, например, открыть дверь
-        }
+        Debug.Log("Puzzle solved...");
+        onCompleteSequence?.Invoke();
     }
 }
