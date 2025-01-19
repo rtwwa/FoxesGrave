@@ -8,12 +8,18 @@ public class Door : OnComplete, IInteractable
     [SerializeField] private float moveDuration = 1f;
     [SerializeField] private float rotateAngle = -90f;
     [SerializeField] private bool onlyByEvent = false;
+    private Quaternion startRotation;
 
     [SerializeField] private OpenType openType; // Ќовый enum дл€ типа открыти€ двери
     [SerializeField] private Collider doorCollider; // Collider двери дл€ получени€ еЄ размеров
 
     private bool opened;
     private bool isMoving = false;
+
+    private void Start()
+    {
+        startRotation = transform.rotation;
+    }
 
     // Enum дл€ типа открыти€
     public enum OpenType
@@ -34,7 +40,6 @@ public class Door : OnComplete, IInteractable
     {
         isMoving = true;
 
-        Quaternion startRotation = transform.rotation;
         Quaternion targetRotation;
 
         Vector3 startPosition = transform.position;
@@ -49,11 +54,11 @@ public class Door : OnComplete, IInteractable
             case OpenType.Rotate:
                 if (!opened)
                 {
-                    targetRotation = Quaternion.Euler(0f, rotateAngle, 0f);
+                    targetRotation = Quaternion.Euler(0f, startRotation.eulerAngles.y + rotateAngle, 0f);
                 }
                 else
                 {
-                    targetRotation = Quaternion.Euler(0f, 0f, 0f);
+                    targetRotation = startRotation;
                 }
 
                 float rotationElapsedTime = 0f;

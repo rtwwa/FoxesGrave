@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class Elevator : MonoBehaviour, IInteractable
+public class Elevator : OnComplete, IInteractable
 {
     [SerializeField] private GameObject model;
     [SerializeField] private GameObject outlineModel;
@@ -15,7 +15,7 @@ public class Elevator : MonoBehaviour, IInteractable
     private void Start()
     {
         minHeight = transform.position.y;
-        Debug.Log(minHeight);
+        maxHeight = minHeight + maxHeight;
     }
 
     public void Interact()
@@ -63,5 +63,10 @@ public class Elevator : MonoBehaviour, IInteractable
     public void HideOutline()
     {
        outlineModel.SetActive(false);
+    }
+
+    public override void Invoke()
+    {
+        StartCoroutine(MoveElevator());
     }
 }

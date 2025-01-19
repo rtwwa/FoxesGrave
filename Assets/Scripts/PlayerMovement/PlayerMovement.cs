@@ -92,7 +92,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
-        isGrounded = IsGrounded();
+        //isGrounded = IsGrounded();
         HandleMovement();
         HandleInteraction();
     }
@@ -174,27 +174,28 @@ public class PlayerMovement : MonoBehaviour
     //    Gizmos.matrix = Matrix4x4.TRS(boxCenter, transform.rotation, Vector3.one);
     //    Gizmos.DrawWireCube(Vector3.zero, interactionBoxSize);
     //}
-    private bool IsGrounded()
-    {
-        RaycastHit hit;
-        float checkDistance = 0.1f;  // Расстояние для проверки земли
+    //private bool IsGrounded()
+    //{
+    //    RaycastHit hit;
+    //    float checkDistance = 0.15f;  // Расстояние для проверки земли
 
-        // Выстреливаем луч вниз от позиции игрока, чтобы проверить, есть ли земля под ним
-        if (Physics.Raycast(transform.position, Vector3.down, out hit, checkDistance))
-        {
-            return true;
-        }
+    //    // Выстреливаем луч вниз от позиции игрока, чтобы проверить, есть ли земля под ним
+    //    if (Physics.Raycast(PlayerMovement.Instance.transform.position, Vector3.down, out hit, checkDistance))
+    //    {
+    //        Debug.Log(hit.collider.name);
+    //        return true;
+    //    }
 
-        return false;
-    }
+    //    return false;
+    //}
 
 
     private void GameInput_OnJumpAction(object sender, EventArgs e)
     {
-        if (isGrounded)
-        {
-            rb.velocity = new Vector3(rb.velocity.x, Mathf.Sqrt(jumpHeight * -2f * Physics.gravity.y), rb.velocity.z);
-        }
+        //if (isGrounded)
+        //{
+        //    rb.velocity = new Vector3(rb.velocity.x, Mathf.Sqrt(jumpHeight * -2f * Physics.gravity.y), rb.velocity.z);
+        //}
     }
 
     private void GameInput_OnFlipAction(object sender, EventArgs e)
@@ -317,7 +318,6 @@ public class PlayerMovement : MonoBehaviour
 
         isWalking = moveDirection != Vector3.zero;
 
-        transform.position = new Vector3(transform.position.x, transform.position.y + verticalVelocity * Time.deltaTime, transform.position.z);
         transform.forward = Vector3.Slerp(transform.forward, moveDirection, Time.deltaTime * rotateSpeed);
     }
 }
