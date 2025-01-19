@@ -11,11 +11,11 @@ public class GunslingerCurseCoin : MonoBehaviour, ICoin
     private int damage = 50;
     private LayerMask targetLayer;
     private float repelRadius = 5f;
-    private float repelForce = 5f;
+    private float repelForce = 15f;
 
     private void Awake()
     {
-        targetLayer = LayerMask.NameToLayer("Enemy");
+        targetLayer = LayerMask.GetMask("Enemy");
     }
 
     public void UseAbility()
@@ -27,7 +27,7 @@ public class GunslingerCurseCoin : MonoBehaviour, ICoin
         }
 
         if (ICoin.GetRandomChoice())
-            Repel();
+            Shoot();
         else
             Repel();
 
@@ -42,7 +42,7 @@ public class GunslingerCurseCoin : MonoBehaviour, ICoin
 
         RaycastHit hit;
 
-        if (Physics.Raycast(origin + Vector3.up * 1f, direction, out hit, rayDistance, ~targetLayer))
+        if (Physics.Raycast(origin + Vector3.up * 1f, direction, out hit, rayDistance, targetLayer))
         {
             Debug.Log($"Hit {hit.collider.name} at distance {hit.distance}");
 
@@ -59,17 +59,29 @@ public class GunslingerCurseCoin : MonoBehaviour, ICoin
             Debug.Log("Missed. No target hit.");
         }
 
-        Vector3 finalPosition = PlayerMovement.Instance.transform.position + PlayerMovement.Instance.transform.TransformDirection(Vector3.back * 2f);
-        StartCoroutine(KickbackPlayer(origin, finalPosition, 0.2f)); // Полет по диагонали
+        // Перемещение игрока с использованием Rigidbody
+        Rigidbody rb = PlayerMovement.Instance.GetComponent<Rigidbody>();
+
+        if (rb != null)
+        {
+            // Направление отталкивания (в противоположную сторону от выстрела)
+            Vector3 knockbackDirection = PlayerMovement.Instance.transform.TransformDirection(Vector3.back);
+
+            // Применение силы отталкивания к Rigidbody игрока
+            rb.AddForce(knockbackDirection * 10f, ForceMode.Impulse); // 10f - сила отталкивания, можно подстроить
+        }
+        else
+        {
+            Debug.LogWarning("Player does not have a Rigidbody component!");
+        }
     }
 
     private IEnumerator KickbackPlayer(Vector3 startPosition, Vector3 endPosition, float duration)
     {
         float elapsedTime = 0f;
-        Vector3 midPoint = (startPosition + endPosition) / 2 + Vector3.up * 0.5f;
+        Vector3 midPoint = (startPosition + endPosition) / 2 + Vector3.up * 1f;
 
         float collisionRadius = 0.5f; // Радиус проверки коллайдераыы
-        LayerMask obstacleLayer = LayerMask.GetMask("Enemy"); // Убедитесь, что слой корректен
 
         while (elapsedTime < duration)
         {
@@ -81,7 +93,7 @@ public class GunslingerCurseCoin : MonoBehaviour, ICoin
             Vector3 currentPosition = Vector3.Lerp(Vector3.Lerp(startPosition, midPoint, t), Vector3.Lerp(midPoint, endPosition, t), t);
 
             // Проверка на столкновение
-            if (Physics.CheckSphere(currentPosition, collisionRadius, obstacleLayer))
+            if (Physics.CheckSphere(currentPosition, collisionRadius, ~LayerMask.GetMask("Player")))
             {
                 Debug.Log($"Obstacle detected at position {currentPosition}, stopping kickback.");
                 Debug.DrawLine(currentPosition, currentPosition + Vector3.up * 2, Color.red, 100f);
@@ -99,42 +111,6 @@ public class GunslingerCurseCoin : MonoBehaviour, ICoin
 
         PlayerMovement.Instance.transform.position = endPosition;
     }
-
-    private IEnumerator Kickback(GameObject obj, Vector3 startPosition, Vector3 endPosition, float duration)
-    {
-        float elapsedTime = 0f;
-        Vector3 midPoint = (startPosition + endPosition) / 2 + Vector3.up * 0.5f;
-
-        float collisionRadius = 0.5f;
-
-        while (elapsedTime < duration)
-        {
-            elapsedTime += Time.deltaTime;
-            float t = elapsedTime / duration;
-            t = t * t * t * (5 - 2 * t); // Делает движение более естественным
-
-            // Интерполяция с учётом средней точки
-            Vector3 currentPosition = Vector3.Lerp(Vector3.Lerp(startPosition, midPoint, t), Vector3.Lerp(midPoint, endPosition, t), t);
-
-            // Проверка на столкновение
-            if (Physics.CheckSphere(currentPosition, collisionRadius, ~LayerMask.GetMask("Enemy")))
-            {
-                Debug.Log($"Obstacle detected at position {currentPosition}, stopping kickback.");
-                Debug.DrawLine(currentPosition, currentPosition + Vector3.up * 15, Color.red, 100f);
-                endPosition = currentPosition;
-                yield break;
-            }
-
-            obj.transform.position = currentPosition;
-
-            // Отладочная линия
-            Debug.DrawLine(currentPosition, currentPosition + Vector3.up * 15, Color.green, 0.1f);
-
-            yield return null;
-        }
-
-        obj.transform.position = endPosition;
-    }
     private void Repel()
     {
         Debug.Log("Repelling enemies within a cylinder...");
@@ -148,17 +124,24 @@ public class GunslingerCurseCoin : MonoBehaviour, ICoin
         foreach (Collider collider in hitColliders)
         {
             Debug.Log($"Repelled {collider.name}");
-            Vector3 directionToTarget = collider.transform.position - PlayerMovement.Instance.transform.position;
-            float distance = directionToTarget.magnitude;
+            Rigidbody enemyRigidbody = collider.GetComponent<Rigidbody>();
 
-            if (distance > 0)
+            if (enemyRigidbody != null)
             {
-                Vector3 repelDisplacement = directionToTarget.normalized * (repelForce / distance);
+                Vector3 directionToTarget = collider.transform.position - PlayerMovement.Instance.transform.position;
+                float distance = directionToTarget.magnitude;
 
-                Debug.Log($"Repelled {collider.name} with displacement {repelDisplacement}.");
+                if (distance > 0)
+                {
+                    Vector3 repelForceVector = directionToTarget.normalized * (repelForce / distance);
 
-                // Вызываем Kickback для каждого врага
-                StartCoroutine(Kickback(collider.gameObject, collider.transform.position, collider.transform.position + repelDisplacement, 0.5f));
+                    Debug.Log($"Applying force {repelForceVector} to {collider.name}.");
+                    enemyRigidbody.AddForce(repelForceVector, ForceMode.Impulse);
+                }
+            }
+            else
+            {
+                Debug.LogWarning($"No Rigidbody found on {collider.name}. Unable to repel.");
             }
         }
     }

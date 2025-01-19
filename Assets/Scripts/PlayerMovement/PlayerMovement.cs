@@ -25,7 +25,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float moveSpeed = 7f;
     [SerializeField] private float rotateSpeed = 15f;
     [SerializeField] private float jumpHeight = 1.5f;
-    [SerializeField] private float gravity = -9.81f;
+    [SerializeField] private Rigidbody rb;
     [SerializeField] private GameInput gameInput;
     private bool isWalking = false;
 
@@ -192,9 +192,6 @@ public class PlayerMovement : MonoBehaviour
             groundCheckDistance,
             ~playerLayerMask))
         {
-            if (hit.distance <= 0.05f)
-                transform.position += Vector3.up * 0.05f; // для работы лифтов
-
             return true;
         }
 
@@ -206,7 +203,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if (isGrounded)
         {
-            verticalVelocity = Mathf.Sqrt(jumpHeight * -2f * gravity);
+            rb.velocity = new Vector3(rb.velocity.x, Mathf.Sqrt(jumpHeight * -2f * Physics.gravity.y), rb.velocity.z);
         }
     }
 
@@ -292,28 +289,15 @@ public class PlayerMovement : MonoBehaviour
             // Объединяем playerLayerMask и SpiritIgnoreThis в одну маску
             LayerMask combinedMask = playerLayerMask | spiritIgnoreLayerMask;
             canMove = !Physics.CapsuleCast(top, bottom, capsuleCollider.radius, moveDirection, moveDistance, ~combinedMask);
+            Physics.IgnoreLayerCollision(gameObject.layer, LayerMask.NameToLayer("Player") | LayerMask.NameToLayer("SpiritIgnoreThis"), true);
         }
         else
         {
             // Если isSpiritModeActive не активен, используем только playerLayerMask
             canMove = !Physics.CapsuleCast(top, bottom, capsuleCollider.radius, moveDirection, moveDistance, ~playerLayerMask);
+            Physics.IgnoreLayerCollision(gameObject.layer, LayerMask.NameToLayer("Player"), true);
         }
 
-        if (!isGrounded)
-        {
-            if (Physics.CapsuleCast(top, bottom, capsuleCollider.radius, Vector3.up * 0.4f, 0.4f, ~playerLayerMask))
-            {
-                verticalVelocity = 0f;
-            }
-
-            verticalVelocity += gravity * Time.deltaTime;
-        }
-        else
-        { 
-            // Если игрок на земле, вертикальная скорость сбрасывается
-            if (verticalVelocity < 0)
-                verticalVelocity = 0f;
-        }
 
         if (!canMove)
         {
