@@ -177,20 +177,10 @@ public class PlayerMovement : MonoBehaviour
     private bool IsGrounded()
     {
         RaycastHit hit;
+        float checkDistance = 0.1f;  // Расстояние для проверки земли
 
-        Vector3 colliderCenter = transform.position + capsuleCollider.center;
-
-        Vector3 top = colliderCenter + Vector3.up * (capsuleCollider.height / 2f - capsuleCollider.radius);
-        Vector3 bottom = colliderCenter - Vector3.up * (capsuleCollider.height / 2f - capsuleCollider.radius);
-
-        if (Physics.CapsuleCast(
-            top,
-            bottom,
-            capsuleCollider.radius,
-            Vector3.down,
-            out hit,
-            groundCheckDistance,
-            ~playerLayerMask))
+        // Выстреливаем луч вниз от позиции игрока, чтобы проверить, есть ли земля под ним
+        if (Physics.Raycast(transform.position, Vector3.down, out hit, checkDistance))
         {
             return true;
         }
