@@ -34,7 +34,7 @@ public class CoinManager : MonoBehaviour
             }
 
             ICoin coinComponent = (ICoin)coinObject.AddComponent(GetCoinComponentForType(coinType));
-            coins.Add(coinType, new CoinInfo(coinType, coinComponent, true)); // TODO поменять на false
+            coins.Add(coinType, new CoinInfo(coinType, coinComponent, false)); // TODO поменять на false
         }
     }
 
@@ -57,7 +57,7 @@ public class CoinManager : MonoBehaviour
         }
     }
 
-    private GameObject GetModelForCoin(CoinType coinType)
+    public GameObject GetModelForCoin(CoinType coinType)
     {
         foreach (var coinModel in coinModels)
         {

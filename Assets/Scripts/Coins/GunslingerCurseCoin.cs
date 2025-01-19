@@ -11,7 +11,7 @@ public class GunslingerCurseCoin : MonoBehaviour, ICoin
     private int damage = 50;
     private LayerMask targetLayer;
     private float repelRadius = 5f;
-    private float repelForce = 1f;
+    private float repelForce = 5f;
 
     private void Awake()
     {
@@ -100,7 +100,7 @@ public class GunslingerCurseCoin : MonoBehaviour, ICoin
         PlayerMovement.Instance.transform.position = endPosition;
     }
 
-    private IEnumerator Kickback(Collider collider, Vector3 startPosition, Vector3 endPosition, float duration)
+    private IEnumerator Kickback(GameObject obj, Vector3 startPosition, Vector3 endPosition, float duration)
     {
         float elapsedTime = 0f;
         Vector3 midPoint = (startPosition + endPosition) / 2 + Vector3.up * 0.5f;
@@ -125,7 +125,7 @@ public class GunslingerCurseCoin : MonoBehaviour, ICoin
                 yield break;
             }
 
-            collider.transform.position = currentPosition;
+            obj.transform.position = currentPosition;
 
             // Отладочная линия
             Debug.DrawLine(currentPosition, currentPosition + Vector3.up * 15, Color.green, 0.1f);
@@ -133,7 +133,7 @@ public class GunslingerCurseCoin : MonoBehaviour, ICoin
             yield return null;
         }
 
-        collider.transform.position = endPosition;
+        obj.transform.position = endPosition;
     }
     private void Repel()
     {
@@ -158,7 +158,7 @@ public class GunslingerCurseCoin : MonoBehaviour, ICoin
                 Debug.Log($"Repelled {collider.name} with displacement {repelDisplacement}.");
 
                 // Вызываем Kickback для каждого врага
-                StartCoroutine(Kickback(collider, collider.transform.position, collider.transform.position + repelDisplacement, 0.5f));
+                StartCoroutine(Kickback(collider.gameObject, collider.transform.position, collider.transform.position + repelDisplacement, 0.5f));
             }
         }
     }

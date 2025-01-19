@@ -1,12 +1,14 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class ButtonSequenceManager : MonoBehaviour
 {
     [SerializeField] private Button[] buttons;
     [SerializeField] private int[] rightSequence;
 
-    [SerializeField] private IOnComplete onComplete;
+    [SerializeField] private List<OnComplete> OnCompleteObjects;
 
     private int currentStep = 0;
 
@@ -42,6 +44,9 @@ public class ButtonSequenceManager : MonoBehaviour
     private void onSequenceComplete()
     {
         Debug.Log("Puzzle solved...");
-        onComplete?.OnComplete();
+        foreach (var OnCompleteObject in OnCompleteObjects)
+        {
+            OnCompleteObject.Invoke();
+        }
     }
 }
